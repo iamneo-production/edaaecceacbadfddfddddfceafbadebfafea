@@ -36,35 +36,37 @@ public class Apptest { // Changed class name to Apptest
     }
     public void getAllProducts() {
       List<WebElement> allProduct = driver.findElements(By.xpath("//div[@id='ResultSetItems']/ul[@id='ListViewInner']/li"));
-for (WebElement product : allProduct) {
-System.out.println(product.getText());
-System.out.println("-----------------------------------------");
+      for (WebElement product : allProduct) {
+        System.out.println(product.getText());
+        System.out.println("-----------------------------------------");
+    }
 }
+
+    public void getAllProductsViaScrollDown() {
+      List<WebElement> allProduct = driver.findElements(By.xpath("//div[@id='ResultSetItems']/ul[@id='ListViewInner']/li"));
+      Actions action = new Actions(driver);
+      for (WebElement product : allProduct) {
+        action.moveToElement(product).build().perform();
+        System.out.println(product.getText());
+        System.out.println("-----------------------------------------");
+    }
 }
-public void getAllProductsViaScrollDown() {
-List<WebElement> allProduct = driver.findElements(By.xpath("//div[@id='ResultSetItems']/ul[@id='ListViewInner']/li"));
-Actions action = new Actions(driver);
-for (WebElement product : allProduct) {
-action.moveToElement(product).build().perform();
-System.out.println(product.getText());
-System.out.println("-----------------------------------------");
+    public void getAllProductsViaScrollDownViaJS() {
+      List<WebElement> allProduct = driver.findElements(By.xpath("//div[@id='ResultSetItems']/ul[@id='ListViewInner']/li"));
+      for (WebElement product : allProduct) {
+        int x, y;
+        x = product.getLocation().x;
+        y = product.getLocation().y;
+        scrollDown(x, y);
+        System.out.println(product.getText());
+        System.out.println("-----------------------------------------");
+    }
 }
+    private void scrollDown(int x, int y) {
+        JavascriptExecutor jsEngine;
+        String jsCommand = String.format("window.scrollBy(%d,%d)", x, y);
+        jsEngine = (JavascriptExecutor) driver;
+        jsEngine.executeScript(jsCommand);
+    }
 }
-public void getAllProductsViaScrollDownViaJS() {
-List<WebElement> allProduct = driver.findElements(By.xpath("//div[@id='ResultSetItems']/ul[@id='ListViewInner']/li"));
-for (WebElement product : allProduct) {
-int x, y;
-x = product.getLocation().x;
-y = product.getLocation().y;
-scrollDown(x, y);
-System.out.println(product.getText());
-System.out.println("-----------------------------------------");
-}
-}
-private void scrollDown(int x, int y) {
-JavascriptExecutor jsEngine;
-String jsCommand = String.format("window.scrollBy(%d,%d)", x, y);
-jsEngine = (JavascriptExecutor) driver;
-jsEngine.executeScript(jsCommand);
-}
-}
+
